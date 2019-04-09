@@ -81,6 +81,7 @@ public class ComparedView extends View {
     private void initPath () {
         int width = getWidth();
         int height = getHeight();
+
         if (width == 0) {
             return;
         }
@@ -99,29 +100,30 @@ public class ComparedView extends View {
         float rightTxtWidth = mPaintText.measureText(mTextRight);
         if (leftWidth < leftTxtWidth + mSpace * 2) {
             leftWidth = leftTxtWidth + mSpace * 2;
+            rightWidth = width - leftWidth;
         }
-        if (rightWidth < rightTxtWidth + mSpace * 3) {
-            rightWidth = rightTxtWidth + mSpace * 3;
+        if (rightWidth < rightTxtWidth + mSpace * 2) {
+            rightWidth = rightTxtWidth + mSpace * 2;
             leftWidth = width - rightWidth;
         }
         mPathLeft = new Path();
         mPathLeft.moveTo(0, 0);
-        mPathLeft.rLineTo(leftWidth + mSpace, 0);
+        mPathLeft.rLineTo(leftWidth, 0);
         mPathLeft.rLineTo(- mSpace, height);
-        mPathLeft.rLineTo(- leftWidth, 0);
+        mPathLeft.rLineTo(- leftWidth + mSpace, 0);
         mPathLeft.close();
 
         mPathRight = new Path();
-        mPathRight.moveTo(leftWidth + mSpace * 2, 0);
-        mPathRight.lineTo(width, 0);
-        mPathRight.rLineTo(0, height);
-        mPathRight.rLineTo(- width + (leftWidth + mSpace), 0);
+        mPathRight.moveTo(leftWidth, height);
+        mPathRight.rLineTo(rightWidth, 0);
+        mPathRight.rLineTo(0, - height);
+        mPathRight.rLineTo(- (rightWidth - mSpace), 0);
         mPathRight.close();
-        mTextLeftX = mSpace;
+        mTextLeftX = mSpace/2;
         Paint.FontMetrics fontMetrics = mPaintText.getFontMetrics();
         float offset = - (fontMetrics.ascent + fontMetrics.descent) / 2;
         mTextY = height / 2 + offset;//处理文字不居中的情况
-        mTextRightX = (int) (width - mSpace - rightTxtWidth);
+        mTextRightX = (int) (width - mSpace/2 - rightTxtWidth);
     }
 
 
