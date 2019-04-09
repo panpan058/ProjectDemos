@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ppw.projectdemos.view.ComparedView
+        android:id="@+id/cv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftColor="@color/colorPrimary"
+        app:rightColor="@color/colorAccent"
+        app:textColor="#fff"
+        app:textSize="20sp"/>
+
+    <EditText
+        android:id="@+id/edt2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入右边数字"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <EditText
+        android:id="@+id/edt1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入左边数字"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/edt2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="show"
+        android:text="显示"
+        app:layout_constraintBottom_toTopOf="@+id/edt1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
