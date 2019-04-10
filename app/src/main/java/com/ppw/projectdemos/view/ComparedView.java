@@ -25,7 +25,7 @@ import androidx.annotation.Nullable;
  */
 public class ComparedView extends View {
 
-    private int mSpace = 30;//左右两边之间的空隙
+    private float mSpace = 30;//左右两边之间的空隙
     private float mTextLeftX;//文字左边 x轴
     private float mTextY;//y轴距离
     private String mTextLeft;//左边文字
@@ -64,6 +64,7 @@ public class ComparedView extends View {
         mColorRight = typedArray.getColor(R.styleable.ComparedView_rightColor, Color.parseColor("#8fc3f2"));
         mColorText = typedArray.getColor(R.styleable.ComparedView_textColor, Color.parseColor("#ffffff"));
         mTextSize = typedArray.getDimension(R.styleable.ComparedView_textSize, 40);
+        mSpace = typedArray.getDimension(R.styleable.ComparedView_spaceSize, 30);
         typedArray.recycle();
     }
 
@@ -119,11 +120,11 @@ public class ComparedView extends View {
         mPathRight.rLineTo(0, - height);
         mPathRight.rLineTo(- (rightWidth - mSpace), 0);
         mPathRight.close();
-        mTextLeftX = mSpace/2;
+        mTextLeftX = mSpace / 2;
         Paint.FontMetrics fontMetrics = mPaintText.getFontMetrics();
         float offset = - (fontMetrics.ascent + fontMetrics.descent) / 2;
-        mTextY = height / 2 + offset;//处理文字不居中的情况
-        mTextRightX = (int) (width - mSpace/2 - rightTxtWidth);
+        mTextY = (height >> 1) + offset;//处理文字不居中的情况
+        mTextRightX = (int) (width - mSpace / 2 - rightTxtWidth);
     }
 
 

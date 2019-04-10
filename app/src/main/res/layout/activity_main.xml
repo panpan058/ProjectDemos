@@ -8,13 +8,35 @@
     tools:context=".activity.MainActivity">
 
     <Button
-        android:onClick="comparedView"
+        android:id="@+id/btn_comparedView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="comparedView"
         android:text="自定义对比条"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_activityPermission"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <Button
+        android:id="@+id/btn_activityPermission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="activityPermission"
+        android:text="activity请求权限"
+        app:layout_constraintBottom_toTopOf="@+id/btn_fragmentPermission"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_comparedView"/>
+
+    <Button
+        android:id="@+id/btn_fragmentPermission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="fragmentPermission"
+        android:text="activity请求权限"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_activityPermission"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

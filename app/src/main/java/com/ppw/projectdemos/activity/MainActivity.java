@@ -24,4 +24,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, clazz);
         startActivity(intent);
     }
+
+    public void activityPermission (View view) {
+        goActivity(ActivityPermissionActivity.class);
+    }
+
+    public void fragmentPermission (View view) {
+        goActivity(FragmentPermissionActivity.class);
+    }
 }

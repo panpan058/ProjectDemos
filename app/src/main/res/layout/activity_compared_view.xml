@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftColor="@color/colorPrimary"
         app:rightColor="@color/colorAccent"
+        app:spaceSize="15dp"
         app:textColor="#fff"
         app:textSize="20sp"/>
 
