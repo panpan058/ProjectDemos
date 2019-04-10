@@ -3,7 +3,6 @@
 #  对比条
 ![对比条图片](https://github.com/panpan058/ProjectDemos/raw/master/app/src/main/assets/comparedView.gif)
 #   动态请求权限
-##  使用
     PPWPermissions.with(this)   
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)    
                 .permissions(Manifest.permission.SYSTEM_ALERT_WINDOW)   
