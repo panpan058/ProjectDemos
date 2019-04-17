@@ -31,6 +31,7 @@
         请求权限一定是要按钮点击触发,然后可以避免此类问题的发生    
 #  3.Glide加载圆角图片不显示的问题
 ![Glide加载圆角图片](https://github.com/panpan058/ProjectDemos/raw/master/app/src/main/assets/glideRound.png)     
+            
           RequestOptions roundOptions = new RequestOptions()    
                     .transform(new RoundedCorners(30));     
             //加载第一个图片       
