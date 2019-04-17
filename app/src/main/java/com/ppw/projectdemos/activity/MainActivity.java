@@ -32,4 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public void fragmentPermission (View view) {
         goActivity(FragmentPermissionActivity.class);
     }
+
+    public void glideRound (View view) {
+        goActivity(GlideRoundActivity.class);
+    }
 }

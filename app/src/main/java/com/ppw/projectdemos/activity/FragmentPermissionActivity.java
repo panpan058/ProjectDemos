@@ -12,7 +12,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
+/**
+ *  <pre>
+ *     Created by ppW
+ *     e-mail : wangpanpan05@163.com
+ *     time   : 2019/4/17 17:15
+ *     desc   : Fragment请求权限
+ *     version: 1.0     初始化
+ *     params:  key:        value:
+ *  <pre>
+ */
 public class FragmentPermissionActivity extends AppCompatActivity {
     ViewPager mViewPager;
     List<Fragment> mFragments;

@@ -9,7 +9,16 @@ import com.ppw.projectdemos.R;
 import com.ppw.projectdemos.view.ComparedView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+/**
+ *  <pre>
+ *     Created by ppW
+ *     e-mail : wangpanpan05@163.com
+ *     time   : 2019/4/17 17:16
+ *     desc   : 自定义对比条
+ *     version: 1.0     初始化
+ *     params:  key:        value:
+ *  <pre>
+ */
 public class ComparedViewActivity extends AppCompatActivity {
     private ComparedView mView;
     private EditText mEditText1;

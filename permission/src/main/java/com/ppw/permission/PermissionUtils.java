@@ -9,6 +9,8 @@ import android.provider.Settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+
 /**
  * <pre>
  *     Created by ppW
@@ -28,13 +30,17 @@ public class PermissionUtils {
     static boolean isSDK23 () {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
+
     /**
      * 是否是8.0以上版本
      */
     static boolean isSDK26 () {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
-    /** 获取需要请求的权限
+
+    /**
+     * 获取需要请求的权限
+     *
      * @param context
      * @param permissions
      * @return
@@ -49,7 +55,7 @@ public class PermissionUtils {
         for (String permission : permissions) {
             if (permission.equals(Manifest.permission.REQUEST_INSTALL_PACKAGES)) {
 
-                if (!isHasInstallPermission(context)) {
+                if (! isHasInstallPermission(context)) {
                     result.add(permission);
                 }
                 continue;
@@ -58,7 +64,7 @@ public class PermissionUtils {
             //检测悬浮窗权限
             if (permission.equals(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
 
-                if (!isHasOverlaysPermission(context)) {
+                if (! isHasOverlaysPermission(context)) {
                     result.add(permission);
                 }
                 continue;
@@ -74,16 +80,17 @@ public class PermissionUtils {
     /**
      * 是否有安装权限
      */
-    static boolean isHasInstallPermission(Context context) {
+    static boolean isHasInstallPermission (Context context) {
         if (isSDK26()) {
             return context.getPackageManager().canRequestPackageInstalls();
         }
         return true;
     }
+
     /**
      * 是否有悬浮窗权限
      */
-    static boolean isHasOverlaysPermission(Context context) {
+    static boolean isHasOverlaysPermission (Context context) {
         if (isSDK23()) {
             return Settings.canDrawOverlays(context);
         }
@@ -95,8 +102,15 @@ public class PermissionUtils {
      *
      * @param context 上下文对象
      */
-    public static void gotoPermissionSettings(Context context) {
+    public static void gotoPermissionSettings (Context context) {
         PermissionSettingPage.start(context, false);
     }
 
+    /**
+     * 跳转到应用权限设置页面
+     *
+     */
+    public static void gotoPermissionSettings (Fragment fragment, int requestCode) {
+        PermissionSettingPage.start(fragment, requestCode);
+    }
 }

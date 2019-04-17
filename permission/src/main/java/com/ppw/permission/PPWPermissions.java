@@ -19,27 +19,41 @@ import androidx.fragment.app.Fragment;
  */
 public class PPWPermissions {
     private AppCompatActivity mActivity;
-    private List<String> permissions;
-    private Fragment mFragment;
-    private PPWPermissions (AppCompatActivity activity) {
+    private List<String> permissions;//请求的权限
+    private boolean isContinue;//碰见悬浮窗权限是否是继续请求权限
+
+    private PPWPermissions () {
+
+    }
+
+
+    private static class PPWPermissionsHolder {
+        private static final PPWPermissions INSTANCE = new PPWPermissions();
+    }
+
+    public static PPWPermissions getInstance () {
+        return PPWPermissionsHolder.INSTANCE;
+    }
+
+    public PPWPermissions with (AppCompatActivity activity) {
         mActivity = activity;
         permissions = new ArrayList<>();
+        return this;
     }
 
-    private PPWPermissions (Fragment fragment) {
-        mFragment = fragment;
+    public PPWPermissions with (Fragment fragment) {
+        mActivity = ((AppCompatActivity) fragment.getActivity());
         permissions = new ArrayList<>();
-    }
-    public static PPWPermissions with (AppCompatActivity activity) {
-        return new PPWPermissions(activity);
-    }
-
-    public static PPWPermissions with (Fragment fragment) {
-        return new PPWPermissions(((AppCompatActivity) fragment.getActivity()));
+        return this;
     }
 
     public PPWPermissions permissions (String... permissions) {
         this.permissions.addAll(Arrays.asList(permissions));
+        return this;
+    }
+
+    public PPWPermissions isContinue (boolean isContinue) {
+        this.isContinue = isContinue;
         return this;
     }
 
@@ -52,7 +66,7 @@ public class PPWPermissions {
         if (PermissionUtils.isSDK23()) {
             //请求权限
             PermissionFragment permissionFragment =
-                    PermissionFragment.newInstance(requestPermissions);
+                    PermissionFragment.newInstance(requestPermissions, isContinue);
             permissionFragment.requestPermission(mActivity, callback);
         } else {
             //跳转到设置页面
