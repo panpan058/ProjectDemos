@@ -36,4 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public void glideRound (View view) {
         goActivity(GlideRoundActivity.class);
     }
+
+    public void clText (View view) {
+        goActivity(ClTextActivity.class);
+    }
 }

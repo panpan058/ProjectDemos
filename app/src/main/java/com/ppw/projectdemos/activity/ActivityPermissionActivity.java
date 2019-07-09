@@ -43,7 +43,7 @@ public class ActivityPermissionActivity extends AppCompatActivity {
         PPWPermissions.getInstance()
                 .with(this)
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .permissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .permissions(Manifest.permission.ACCESS_FINE_LOCATION)
                 .isContinue(isContinue)
                 .request(new PermissionCallback() {
                     @Override

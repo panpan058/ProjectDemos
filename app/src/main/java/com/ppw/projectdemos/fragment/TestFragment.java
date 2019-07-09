@@ -52,7 +52,7 @@ public class TestFragment extends Fragment {
         PPWPermissions.getInstance()
                 .with(this)
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .permissions(Manifest.permission.SYSTEM_ALERT_WINDOW)
+                .permissions(Manifest.permission.ACCESS_COARSE_LOCATION)
                 .request(new PermissionCallback() {
                     @Override
                     public void hasPermission () {

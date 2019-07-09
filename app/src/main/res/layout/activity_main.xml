@@ -46,8 +46,18 @@
         android:layout_height="wrap_content"
         android:text="Glide圆角图片问题"
         android:onClick="glideRound"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_clText"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_fragmentPermission"/>
+    <Button
+        android:id="@+id/btn_clText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView满一行的问题"
+        android:onClick="clText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_glideRound"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
