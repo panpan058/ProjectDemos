@@ -50,4 +50,7 @@
             Glide.with(this)        
                     .load(R.mipmap.ic_test)     
                     .apply(roundOptions)        
-                    .into(ivActivityGlideRoundCenterCropResult);               
+                    .into(ivActivityGlideRoundCenterCropResult);  
+              
+#   4.TextView后面有图标,不满一行的时候图标跟着文本,满一行的时候图标在最右侧,文本显示...  
+![TextView布局](https://img-blog.csdnimg.cn/20190625111136520.gif)       
