@@ -8,8 +8,8 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.gyf.immersionbar.ImmersionBar;
 import com.ppw.projectdemos.R;
-import com.ppw.projectdemos.utils.ScreenUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +35,8 @@ public class SplashActivity  extends AppCompatActivity {
     protected void onCreate (@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setTheme(R.style.AppTheme);
-        ScreenUtils.steepStatus(this);
-//        ImmersionBar.with(this).init();
+//        ScreenUtils.steepStatus(this);
+        ImmersionBar.with(this).init();
         setContentView(initLayoutId());
         cpActivitySplash = findViewById(R.id.cp_activitySplash);
         initData();
