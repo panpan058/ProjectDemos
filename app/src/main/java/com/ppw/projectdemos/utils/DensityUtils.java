@@ -1,6 +1,5 @@
 package com.ppw.projectdemos.utils;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.util.DisplayMetrics;
 import java.lang.reflect.Field;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * <pre>
@@ -86,7 +86,7 @@ public class DensityUtils {
      *
      * @param activity activity
      */
-    public static void setDefault (Activity activity) {
+    public static void setDefault (AppCompatActivity activity) {
         setAppOrientation(activity, WIDTH);
     }
 
@@ -97,7 +97,7 @@ public class DensityUtils {
      * @param activity    activity
      * @param orientation WIDTH HEIGHT
      */
-    public static void setOrientation (Activity activity, int orientation) {
+    public static void setOrientation (AppCompatActivity activity, int orientation) {
         setAppOrientation(activity, orientation);
     }
 
@@ -107,7 +107,7 @@ public class DensityUtils {
      * @param activity    activity
      * @param orientation WIDTH 宽，HEIGHT 高
      */
-    private static void setAppOrientation (@NonNull Activity activity, int orientation) {
+    private static void setAppOrientation (@NonNull AppCompatActivity activity, int orientation) {
 
         float targetDensity;
 
@@ -135,7 +135,7 @@ public class DensityUtils {
      *
      * @param activity activity
      */
-    public static void resetAppOrientation (@NonNull Activity activity) {
+    public static void resetAppOrientation (@NonNull AppCompatActivity activity) {
         DisplayMetrics activityDisplayMetrics = activity.getResources().getDisplayMetrics();
         activityDisplayMetrics.density = appDensity;
         activityDisplayMetrics.scaledDensity = appScaledDensity;

@@ -1,6 +1,5 @@
 package com.ppw.projectdemos.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,6 +12,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 /**
@@ -80,7 +81,7 @@ public class ScreenUtils {
      * @param activity
      * @return
      */
-    public static Bitmap snapShotWithStatusBar (Activity activity) {
+    public static Bitmap snapShotWithStatusBar (AppCompatActivity activity) {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -100,7 +101,7 @@ public class ScreenUtils {
      * @param activity
      * @return
      */
-    public static Bitmap snapShotWithoutStatusBar (Activity activity) {
+    public static Bitmap snapShotWithoutStatusBar (AppCompatActivity activity) {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -132,7 +133,7 @@ public class ScreenUtils {
      *
      * @param activity
      */
-    public static void steepStatus (Activity activity) {
+    public static void steepStatus (AppCompatActivity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//4.4 全透明状态栏
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
@@ -221,7 +222,7 @@ public class ScreenUtils {
      *
      * @param activity
      */
-    public static void showStatusBar (Activity activity) {
+    public static void showStatusBar (AppCompatActivity activity) {
         WindowManager.LayoutParams attr = activity.getWindow().getAttributes();
         attr.flags &= (~ WindowManager.LayoutParams.FLAG_FULLSCREEN);
         activity.getWindow().setAttributes(attr);
@@ -235,7 +236,7 @@ public class ScreenUtils {
      *
      * @param activity
      */
-    public static void hideStatusBar (Activity activity) {
+    public static void hideStatusBar (AppCompatActivity activity) {
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
         lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
         activity.getWindow().setAttributes(lp);

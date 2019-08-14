@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 
 /**
  * <pre>
@@ -28,13 +28,19 @@ import androidx.fragment.app.FragmentManager;
  */
 public class PermissionFragment extends Fragment {
     private static final int PERMISSIONS_REQUEST_CODE = 510;
+    private static final int PERMISSIONS_REQUEST_INSTALL_CODE = 511;
+    private static final int PERMISSIONS_REQUEST_OVERLAY_CODE = 512;
     private static final String PERMISSIONS = "permissions";
+    private static final String IS_CONTINUE = "isContinue";
     private PermissionCallback mCallback;
+    private boolean isContinue;
+    private ArrayList<String> mPermissions;
 
-    public static PermissionFragment newInstance (ArrayList permissions) {
+    public static PermissionFragment newInstance (ArrayList permissions, boolean isContinue) {
         PermissionFragment fragment = new PermissionFragment();
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(PERMISSIONS, permissions);
+        bundle.putBoolean(IS_CONTINUE, isContinue);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -48,22 +54,30 @@ public class PermissionFragment extends Fragment {
     @Override
     public void onActivityCreated (@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayList permissions = getArguments().getStringArrayList("permissions");
-        if ((permissions.contains(Manifest.permission.SYSTEM_ALERT_WINDOW) && ! PermissionUtils.isHasOverlaysPermission(getActivity()))) {
+        mPermissions = getArguments().getStringArrayList(PERMISSIONS);
+        ArrayList permissions = mPermissions;
+        isContinue = getArguments().getBoolean(IS_CONTINUE);
+        if ((permissions.contains(Manifest.permission.REQUEST_INSTALL_PACKAGES) && ! PermissionUtils.isHasInstallPermission(getActivity()))
+                || (permissions.contains(Manifest.permission.SYSTEM_ALERT_WINDOW) && ! PermissionUtils.isHasOverlaysPermission(getActivity()))) {
 
-            //            if (permissions.contains(Manifest.permission.REQUEST_INSTALL_PACKAGES) && ! PermissionUtils
-            // .isHasInstallPermission(getActivity())) {
-            //                //跳转到允许安装未知来源设置页面
-            //                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
-            //                        Uri.parse("package:" + getActivity().getPackageName()));
-            //                startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
-            //            }
+            if (permissions.contains(Manifest.permission.REQUEST_INSTALL_PACKAGES) && ! PermissionUtils.isHasInstallPermission(getActivity())) {
+                //跳转到允许安装未知来源设置页面
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        Uri.parse("package:" + getActivity().getPackageName()));
+                startActivityForResult(intent, PERMISSIONS_REQUEST_INSTALL_CODE);
+                if (! isContinue) {
+                    return;
+                }
+            }
 
             if (permissions.contains(Manifest.permission.SYSTEM_ALERT_WINDOW) && ! PermissionUtils.isHasOverlaysPermission(getActivity())) {
                 //跳转到悬浮窗设置页面
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getActivity().getPackageName()));
-                startActivityForResult(intent, PERMISSIONS_REQUEST_CODE);
+                startActivityForResult(intent, PERMISSIONS_REQUEST_OVERLAY_CODE);
+                if (! isContinue) {
+                    return;
+                }
             }
 
         } else {
@@ -79,19 +93,21 @@ public class PermissionFragment extends Fragment {
         if (fragment != null) {
             fragmentManager.beginTransaction().remove(fragment).commit();
         }
-        fragmentManager.beginTransaction().add(this,"permission").commit();
-
+        fragmentManager.beginTransaction().add(this, "permission").commit();
     }
 
     public void requestPermission (Fragment fragment, PermissionCallback callback) {
         this.mCallback = callback;
-        fragment.getChildFragmentManager().beginTransaction().add(this, "permission").commit();
-
+        FragmentManager fragmentManager = fragment.getChildFragmentManager();
+        Fragment fragmentPermission = fragmentManager.findFragmentByTag("permission");
+        if (fragmentPermission != null) {
+            fragmentManager.beginTransaction().remove(fragmentPermission).commit();
+        }
+        fragmentManager.beginTransaction().add(this, "permission").commit();
     }
 
     @Override
     public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             boolean[] shouldShowRequestPermissionRationale = new boolean[permissions.length];
 
@@ -100,6 +116,15 @@ public class PermissionFragment extends Fragment {
             }
             this.onRequestPermissionsResult(permissions, grantResults, shouldShowRequestPermissionRationale);
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+    }
+
+    @Override
+    public boolean shouldShowRequestPermissionRationale (@NonNull String permission) {
+        boolean b = super.shouldShowRequestPermissionRationale(permission);
+        Log.e("tag", "shouldShowRequestPermissionRationale: " + permission + "---" + b);
+        return b;
     }
 
     private void onRequestPermissionsResult (String[] permissions, int[] grantResults,
@@ -116,7 +141,7 @@ public class PermissionFragment extends Fragment {
             }
         }
         //获取全部权限
-        if (hasPermission ) {
+        if (hasPermission) {
             mCallback.hasPermission();
         } else {
             //没全部权限 或者dontask
@@ -126,24 +151,37 @@ public class PermissionFragment extends Fragment {
                 mCallback.noPermission();
             }
         }
-//        getActivity().getSupportFragmentManager().beginTransaction().hide(this).commit();
     }
 
     private boolean isBackCall;//是否已经回调了，避免安装权限和悬浮窗同时请求导致的重复回调
 
     @Override
-    public void onActivityResult (int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        if (! isBackCall && requestCode == PERMISSIONS_REQUEST_CODE) {
-            isBackCall = true;
-            //需要延迟执行，不然有些华为机型授权了但是获取不到权限
-            getActivity().getWindow().getDecorView().postDelayed(new Runnable() {
-                @Override
-                public void run () {
-                    requestPermission();
+    public void onActivityResult (final int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getActivity().getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run () {
+                if (! isBackCall && requestCode == PERMISSIONS_REQUEST_OVERLAY_CODE) {
+                    //悬浮窗
+                    isBackCall = true;
+                    if (! isContinue && ! PermissionUtils.isHasOverlaysPermission(getContext())) {
+                        mCallback.noPermission();
+                    } else {
+                        requestPermission();
+                    }
                 }
-            }, 500);
-        }
+                if (! isBackCall && requestCode == PERMISSIONS_REQUEST_INSTALL_CODE) {
+                    isBackCall = true;
+                    //安装未知应用权限
+                    if (! isContinue && ! PermissionUtils.isHasInstallPermission(getContext())) {
+                        mCallback.noPermission();
+                    } else {
+                        requestPermission();
+                    }
+                }
+            }
+        }, 1000);
+
     }
 
     /**
@@ -151,8 +189,14 @@ public class PermissionFragment extends Fragment {
      */
     public void requestPermission () {
         if (PermissionUtils.isSDK23()) {
-            ArrayList<String> permissions = getArguments().getStringArrayList(PERMISSIONS);
-            requestPermissions(permissions.toArray(new String[permissions.size()]), PERMISSIONS_REQUEST_CODE);
+            if (PermissionUtils.isHasOverlaysPermission(getContext())) {
+                mPermissions.remove(Manifest.permission.SYSTEM_ALERT_WINDOW);
+            }
+            if (mPermissions.size() == 0) {
+                mCallback.hasPermission();
+            } else {
+                requestPermissions(mPermissions.toArray(new String[mPermissions.size()]), PERMISSIONS_REQUEST_CODE);
+            }
         }
     }
 }

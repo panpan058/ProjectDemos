@@ -3,7 +3,11 @@
 #  1.自定义对比条
 ![对比条图片](https://github.com/panpan058/ProjectDemos/raw/master/app/src/main/assets/comparedView.gif)
 #  2.封装动态请求权限
-    implementation 'com.github.panpan058:ProjectDemos:1.0'
+    AndroidX:
+    implementation 'com.pandaWang:pandaPermissionX:1.0'
+    Support:
+    implementation 'com.pandaWang:pandaPermission:1.0'
+
 ##  使用
     PPWPermissions.with(this)   
                 .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)    
